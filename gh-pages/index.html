@@ -202,10 +202,25 @@ new Vue({
             <td> true </td>
             <td> Boolean </td>
             <td>True for a rounded avatar.</td></tr>
+          <tr><td>:chars</td>
+            <td> N </td>
+            <td> 3 </td>
+            <td> Number </td>
+            <td>Max chars for initials.</td></tr>
+          <tr><td>font</td>
+            <td> N </td>
+            <td>Helvetica, Arial, sans-serif</td>
+            <td> String </td>
+            <td>Font family for initials</td></tr>
+          <tr><td>:backgroundColors</td>
+            <td> N </td>
+            <td>
+              see Default color
+            </td>
+            <td> Array </td>
+            <td>Background colors of the avatar</td></tr>
         </tbody>
         </table>
-
-        <p/>
 
         <h2>Event</h2>
         <table class="table">
@@ -231,7 +246,14 @@ new Vue({
               <td><avatar username="Hubert-Félix Thiéfaine"></avatar></td>
               <td><pre><code class="language-html">&lt;avatar username="Hubert-Félix Thiéfaine"&gt;&lt;/avatar&gt;</code></pre></td>
             </tr>
-
+  <tr>
+              <td><avatar :chars="2" username="Hubert-Félix Thiéfaine"></avatar></td>
+              <td><pre><code class="language-html">&lt;avatar :chars="2" username="Hubert-Félix Thiéfaine"&gt;&lt;/avatar&gt;</code></pre></td>
+            </tr>
+              <tr>
+              <td><avatar font="TimesNewRoman, Times New Roman, Times, Baskerville, Georgia, serif" username="Hubert-Félix Thiéfaine"></avatar></td>
+              <td><pre><code class="language-html">&lt;avatar font="TimesNewRoman, Times New Roman, Times, Baskerville, Georgia, serif" :chars="2" username="Hubert-Félix Thiéfaine"&gt;&lt;/avatar&gt;</code></pre></td>
+            </tr>
             <tr>
               <td><avatar username="Hubert-Félix Thiéfaine"
                   background-color="#FFC107"
@@ -288,6 +310,18 @@ new Vue({
                 initials="AS"
                 :size="100"&gt;&lt;/avatar&gt;</code></pre></td>
             </tr>
+
+             <tr>
+              <td><avatar username="Darth Vader"
+                          initials="AS"
+                          background-colors="'#000000','#111111,'#222222','#333333','#444444','#555555'"
+                          :size="100"></avatar></td>
+              <td><pre><code class="language-html">&lt;avatar username="Darth Vader"
+                initials="AS"
+                :size="100"&gt;&lt;/avatar&gt;</code></pre></td>
+            </tr>
+
+
           </tbody>
         </table>
 
@@ -343,7 +377,7 @@ new Vue({
         },
 
         data: {
-          items: []
+          items: [],
         },
 
         methods: {

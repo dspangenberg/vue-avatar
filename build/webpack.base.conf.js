@@ -1,27 +1,29 @@
 var path = require('path')
-var webpack = require('webpack')
-
+var config = require('../config')
+var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
-  entry: './src/',
+  entry: {
+    app: './src/main.js'
+  },
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: '/gh-pages',
-    filename: 'vue-avatar.min.js',
-    library: 'Avatar',
-    libraryTarget: 'umd'
+    path: config.build.assetsRoot,
+    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
+    filename: '[name].js'
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
-    fallback: [path.join(__dirname, 'node_modules')],
+    fallback: [path.join(__dirname, '../node_modules')],
     alias: {
+      'vue': 'vue/dist/vue.common.js',
       'src': path.resolve(__dirname, '../src'),
-      vue: 'vue/dist/vue.js'
+      'assets': path.resolve(__dirname, '../src/assets'),
+      'components': path.resolve(__dirname, '../src/components')
     }
   },
   resolveLoader: {
-    root: path.join(__dirname, 'node_modules'),
+    fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
     preLoaders: [
@@ -46,6 +48,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
+        include: projectRoot,
         exclude: /node_modules/
       },
       {
@@ -53,15 +56,19 @@ module.exports = {
         loader: 'json'
       },
       {
-        test: /\.html$/,
-        loader: 'vue-html'
-      },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url',
         query: {
           limit: 10000,
-          name: '[name].[ext]?[hash]'
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url',
+        query: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
     ]
@@ -69,9 +76,12 @@ module.exports = {
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: false
-  },
-  devtool: '#eval-source-map'
+  vue: {
+    loaders: utils.cssLoaders(),
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 2 versions']
+      })
+    ]
+  }
 }

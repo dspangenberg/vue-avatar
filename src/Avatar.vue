@@ -1,10 +1,12 @@
 <template>
-  <div><div class="avatar" v-bind:style="style">
-    <span v-if="!this.src">{{ userInitial }}</span>
-  </div></div>
+  <div>
+    <div class="avatar" v-bind:style="style">
+      <span v-if="!this.src">{{ userInitial }}</span>
+    </div>
+  </div>
 </template>
 
-<script type="text/babel">
+<script>
 export default {
 
   props: {
@@ -35,16 +37,26 @@ export default {
     lighten: {
       type: Number,
       default: 80
-    }
-  },
+    },
+    font: {
+      type: String,
+      default: 'Helvetica, Arial, sans-serif'
+    },
+    backgroundColors: {
+      type: Array,
+      default: function () {
+        return [
+          '#F44336', '#000000', '#9C27B0', '#673AB7',
+          '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688',
+          '#4CAF50', '#8BC34A', '#CDDC39', /* '#FFEB3B' ,*/ '#FFC107',
+          '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'
+        ]
+      }
+    },
 
-  data () {
-    return {
-      backgroundColors: [
-        '#F44336', '#FF4081', '#9C27B0', '#673AB7',
-        '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688',
-        '#4CAF50', '#8BC34A', '#CDDC39', /* '#FFEB3B' ,*/ '#FFC107',
-        '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B']
+    chars: {
+      type: Number,
+      default: 3
     }
   },
 
@@ -53,9 +65,10 @@ export default {
   },
 
   computed: {
+
     background () {
       return this.backgroundColor ||
-              this.randomBackgroundColor(this.username.length, this.backgroundColors)
+        this.randomBackgroundColor(this.username.length, this.backgroundColors)
     },
 
     fontColor () {
@@ -83,7 +96,7 @@ export default {
 
       const initialBackgroundAndFontStyle = {
         backgroundColor: this.background,
-        font: Math.floor(this.size / 2.5) + 'px/100px Helvetica, Arial, sans-serif',
+        font: Math.floor(this.size / 2.5) + 'px/100px ' + this.font,
         fontWeight: 'bold',
         color: this.fontColor,
         lineHeight: (this.size + Math.floor(this.size / 20)) + 'px'
@@ -105,6 +118,11 @@ export default {
   },
 
   methods: {
+
+    getColor () {
+      return this.defaultBackgroundColors
+    },
+
     initial (username) {
       let parts = username.split(/[ -]/)
       let initials = ''
@@ -117,7 +135,7 @@ export default {
         initials = initials.replace(/[a-z]+/g, '')
       }
 
-      initials = initials.substr(0, 3).toUpperCase()
+      initials = initials.substr(0, this.chars).toUpperCase()
 
       return initials
     },
